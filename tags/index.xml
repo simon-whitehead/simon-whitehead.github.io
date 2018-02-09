@@ -6,9 +6,19 @@
     <description>Recent content in Tags on Simon Whitehead - Dev Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Thu, 08 Feb 2018 14:26:11 +1100</lastBuildDate>
     
 	<atom:link href="https://simon-whitehead.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hello</title>
+      <link>https://simon-whitehead.github.io/tags/hello/</link>
+      <pubDate>Thu, 08 Feb 2018 14:26:11 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/hello/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

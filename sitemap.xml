@@ -18,6 +18,12 @@
   </url>
   
   <url>
+    <loc>https://simon-whitehead.github.io/tags/hello/</loc>
+    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://simon-whitehead.github.io/post/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
     <priority>0</priority>
@@ -31,6 +37,13 @@
   
   <url>
     <loc>https://simon-whitehead.github.io/tags/</loc>
+    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/categories/uncategorized/</loc>
+    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
     <priority>0</priority>
   </url>
   

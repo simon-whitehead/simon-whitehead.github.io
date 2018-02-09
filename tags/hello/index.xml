@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Simon Whitehead - Dev Blog</title>
-    <link>https://simon-whitehead.github.io/</link>
-    <description>Recent content on Simon Whitehead - Dev Blog</description>
+    <title>Hello on Simon Whitehead - Dev Blog</title>
+    <link>https://simon-whitehead.github.io/tags/hello/</link>
+    <description>Recent content in Hello on Simon Whitehead - Dev Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 Feb 2018 14:26:11 +1100</lastBuildDate>
     
-	<atom:link href="https://simon-whitehead.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://simon-whitehead.github.io/tags/hello/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
