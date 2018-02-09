@@ -3,29 +3,34 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/post/hello-world/</loc>
+    <loc>https://simon-whitehead.github.io/2018/02/hello-world/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://simon-whitehead.github.io/archives/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://simon-whitehead.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/post/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/post/</loc>
+    <loc>https://simon-whitehead.github.io/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://simon-whitehead.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   
