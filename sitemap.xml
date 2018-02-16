@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://simon-whitehead.github.io/2018/02/hello-world/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
   </url>
@@ -13,7 +18,25 @@
   </url>
   
   <url>
+    <loc>https://simon-whitehead.github.io/tags/asmcalc/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/assembly/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://simon-whitehead.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/debug/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -24,26 +47,56 @@
   </url>
   
   <url>
+    <loc>https://simon-whitehead.github.io/tags/notation/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/polish/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://simon-whitehead.github.io/post/</loc>
-    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/reverse/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/shunting/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://simon-whitehead.github.io/</loc>
-    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://simon-whitehead.github.io/tags/</loc>
-    <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://simon-whitehead.github.io/categories/uncategorized/</loc>
     <lastmod>2018-02-08T14:26:11+11:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://simon-whitehead.github.io/tags/yard/</loc>
+    <lastmod>2018-02-15T22:30:00+11:00</lastmod>
     <priority>0</priority>
   </url>
   

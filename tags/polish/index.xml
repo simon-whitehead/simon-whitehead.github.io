@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Simon Whitehead - Dev Blog</title>
-    <link>https://simon-whitehead.github.io/</link>
-    <description>Recent content on Simon Whitehead - Dev Blog</description>
+    <title>Polish on Simon Whitehead - Dev Blog</title>
+    <link>https://simon-whitehead.github.io/tags/polish/</link>
+    <description>Recent content in Polish on Simon Whitehead - Dev Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 15 Feb 2018 22:30:00 +1100</lastBuildDate>
     
-	<atom:link href="https://simon-whitehead.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://simon-whitehead.github.io/tags/polish/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <guid>https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/</guid>
       <description>I&amp;rsquo;m a bit of a sucker for low level programming. I&amp;rsquo;m not an expert at it &amp;hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&amp;rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.
 This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations.</description>
-    </item>
-    
-    <item>
-      <title>Hello World</title>
-      <link>https://simon-whitehead.github.io/2018/02/hello-world/</link>
-      <pubDate>Thu, 08 Feb 2018 14:26:11 +1100</pubDate>
-      
-      <guid>https://simon-whitehead.github.io/2018/02/hello-world/</guid>
-      <description>Hello world! I&amp;rsquo;m learning how to use Hugo - the static site generator written in Go!
-I&amp;rsquo;m going to start blogging more regularly as of 2018. Thanks for visiting .. I hope you enjoy the content that I produce.</description>
     </item>
     
   </channel>

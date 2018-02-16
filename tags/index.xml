@@ -6,10 +6,37 @@
     <description>Recent content in Tags on Simon Whitehead - Dev Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Feb 2018 14:26:11 +1100</lastBuildDate>
+    <lastBuildDate>Thu, 15 Feb 2018 22:30:00 +1100</lastBuildDate>
     
 	<atom:link href="https://simon-whitehead.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Asmcalc</title>
+      <link>https://simon-whitehead.github.io/tags/asmcalc/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/asmcalc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Assembly</title>
+      <link>https://simon-whitehead.github.io/tags/assembly/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/assembly/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Debug</title>
+      <link>https://simon-whitehead.github.io/tags/debug/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/debug/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Hello</title>
@@ -17,6 +44,51 @@
       <pubDate>Thu, 08 Feb 2018 14:26:11 +1100</pubDate>
       
       <guid>https://simon-whitehead.github.io/tags/hello/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Notation</title>
+      <link>https://simon-whitehead.github.io/tags/notation/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/notation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Polish</title>
+      <link>https://simon-whitehead.github.io/tags/polish/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/polish/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reverse</title>
+      <link>https://simon-whitehead.github.io/tags/reverse/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/reverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Shunting</title>
+      <link>https://simon-whitehead.github.io/tags/shunting/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/shunting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Yard</title>
+      <link>https://simon-whitehead.github.io/tags/yard/</link>
+      <pubDate>Thu, 15 Feb 2018 22:30:00 +1100</pubDate>
+      
+      <guid>https://simon-whitehead.github.io/tags/yard/</guid>
       <description></description>
     </item>
     

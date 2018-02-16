@@ -1,0 +1,832 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.34 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Adventures in 64-bit Windows Assembly: Part 1</title>
+    <meta name="author" content="Simon Whitehead">
+    <meta name="keywords" content="assembly, asm, x86, x86-64, nasm, golink, debug, debugger, development, programming, rust, go, assembly, developer">
+
+    <link rel="icon" href="https://simon-whitehead.github.io/favicon.png">
+    
+
+    
+    <meta name="description" content="I&rsquo;m a bit of a sucker for low level programming. I&rsquo;m not an expert at it &hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.
+This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations.">
+    <meta property="og:description" content="I&rsquo;m a bit of a sucker for low level programming. I&rsquo;m not an expert at it &hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.
+This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Adventures in 64-bit Windows Assembly: Part 1">
+    <meta property="og:url" content="/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+    <meta property="og:site_name" content="Simon Whitehead - Dev Blog">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Simon Whitehead - Dev Blog">
+    <meta name="twitter:description" content="I&rsquo;m a bit of a sucker for low level programming. I&rsquo;m not an expert at it &hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.
+This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations.">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/945a935d0612d1cba5291963e213b315?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://simon-whitehead.github.io/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.11.0/themes/prism.min.css" />
+    
+      
+        <link rel="stylesheet"  href="https://simon-whitehead.github.io/css/prism-atom-dark.css">
+      
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="2">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://simon-whitehead.github.io/">Simon Whitehead - Dev Blog</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://simon-whitehead.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/945a935d0612d1cba5291963e213b315?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="2">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://simon-whitehead.github.io/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/945a935d0612d1cba5291963e213b315?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Simon Whitehead</h4>
+        
+          <h5 class="sidebar-profile-bio">Hi I&rsquo;m Simon! I&rsquo;m a developer located in Melbourne, Australia. I am employed as a .NET developer but outside of work I prefer Rust, Go and Assembly. I hope you enjoy the content you find here. Thanks for visiting!</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://simon-whitehead.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://simon-whitehead.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://simon-whitehead.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/simon-whitehead" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/1517578/simon-whitehead" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://simon-whitehead.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="2"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Adventures in 64-bit Windows Assembly: Part 1
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-02-15T22:30:00&#43;11:00">
+        
+  February 15, 2018
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+<p>I&rsquo;m a bit of a sucker for low level programming. I&rsquo;m not an expert at it &hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.</p>
+
+<p>This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations. I hope this series can alleviate some of the issues for people.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>There is a little bit of assumed Assembly knowledge here. Ideally you&rsquo;ll be familiar with the syntax and be able to read and follow along with small snippets at a time. I will try to keep them as short as possible to aid with this. You&rsquo;ll understand what the stack is and how it works, and that the stack grows <em>downward</em> in memory (high addresses to low addresses).</p>
+
+<p>I will be using <a href="http://www.nasm.us/">NASM as the assembler</a> and <a href="http://www.godevtool.com/#linker">GoLink as the linker</a>. If you feel more comfortable with another assembler or linker, you should still be able to follow along. However, you should note that the NASM syntax may not directly match that of your own assembler and the linker may have different switches.</p>
+
+<p>Debugging will make use of <a href="https://www.visualstudio.com/downloads/">Visual Studio</a>. There is a free community edition now which has quite a lot of features.</p>
+
+<h2 id="the-end-goal">The end goal</h2>
+
+<p>The end goal will be a <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">shunting yard implementation</a> and a <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">reverse polish notation</a> calculator. Ideally, we&rsquo;ll have written a command line application that can accept a mathematical expression and spit out a result; entirely in assembly. Let&rsquo;s get started.</p>
+
+<h2 id="setting-up-the-project">Setting up the project</h2>
+
+<p>I like to keep the build and run steps nice and quick to save on typing. Start by creating your new project folder and inside it, add a file called <code>asmcalc.asm</code>. This is where we will put our first set of code.</p>
+
+<p>Now create a <code>build</code> folder inside your project folder.</p>
+
+<h4 id="the-build-and-run-batch-files">The build and run batch files</h4>
+
+<p>Next, in your project folder, create a file called <code>build.bat</code> and add this:</p>
+
+
+  
+  
+  
+  
+
+
+<figure class="highlight  language-">
+  <figcaption>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-"><code class="">nasm -f win64 asmcalc.asm -o build/asmcalc.obj
+GoLink /console /entry main build/asmcalc.obj /fo build/asmcalc.exe</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>This batch file does two things. Firstly, it uses <code>nasm</code> to assemble our code into a 64-bit Windows object and it puts it into the <code>build</code> folder. Then <code>GoLink</code> links the object and any other resources we tell it to into an executable (there are none yet).</p>
+
+<p>Finally, lets just create another batch file called <code>run.bat</code>. This batch file will simply run the <code>build.bat</code> batch file, before running our new executable:</p>
+
+
+  
+  
+  
+  
+
+
+<figure class="highlight  language-">
+  <figcaption>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-"><code class="">build.bat
+build\asmcalc.exe</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>All done. Now when we write some code, we can simply navigate to the project folder in a command prompt and type <code>build</code> or <code>run</code> and everything will build and run for us.</p>
+
+<h2 id="let-s-write-some-code">Let&rsquo;s write some code</h2>
+
+<p>Alright, let&rsquo;s get a basic setup happening. In <code>asmcalc.asm</code>, drop this code:</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight nasm language-nasm">
+  <figcaption>
+    
+      <span>asmcalc.asm</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-nasm"><code class="nasm">global main
+
+section .text
+
+main:
+
+    xor rax,rax
+    ret</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>Pretty straight forward stuff here. All we&rsquo;re doing is declaring an entry point, emptying the <code>rax</code> register and returning. The equivalent C code is:</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight c language-c">
+  <figcaption>
+    
+      <span>asmcalc.c</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-c"><code class="c">int main() {
+    return 0;
+}</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>The <code>rax</code> register is where our integer and pointer return values are stored when returning from any functions (this is different for floating point return values - which will need to be covered in a future post).</p>
+
+<h2 id="the-64-bit-windows-abi">The 64-bit Windows ABI</h2>
+
+<p>The 64-bit Windows <strong>A</strong>pplication <strong>B</strong>inary <strong>I</strong>nterface specifies exactly how code should run when running under 64-bit Windows. It covers many topics including how to pass arguments to functions, and even the byte boundaries/alignment requirements.</p>
+
+<h3 id="stack-alignment">Stack alignment</h3>
+
+<p>It might sound stupid&hellip; but right now, this simple bit of code is not 64-bit Windows ABI compatible. Why not?</p>
+
+<p>The stack must be aligned to a 16 byte boundary to satisfy the ABI. There are a couple of reasons for this - none we really have to worry about at this stage. However, let&rsquo;s investigate to see what has happened.</p>
+
+<p>Run <code>build.bat</code> and then fire up Visual Studio. Open up the executable as a solution and it should become the only item in the Solution Explorer.</p>
+
+<p><img src="https://user-images.githubusercontent.com/2499070/36067604-606b5cac-0f14-11e8-9686-369e6a51b509.PNG" alt="asmcalc_project" /></p>
+
+<p>Step into the code by pressing <code>F11</code> (or Debug &gt; Step Into). In your favourite viewing area, lets check the value of the <code>rsp</code> register. I use the Immediate Window for most of this stuff. You can get there via Debug &gt; Windows &gt; Immediate.</p>
+
+<p><img src="https://user-images.githubusercontent.com/2499070/36067643-fb9dd330-0f14-11e8-88b4-edc2f5bbacf5.PNG" alt="unaligned_stack" /></p>
+
+<p>Viewed as a hexidecimal value, the value of the <code>rsp</code> register doesn&rsquo;t end in a zero (NOTE: If your default settings aren&rsquo;t to view values in hex, then you can use the <code>,h</code> formatting suffix for Visual Studio. Instead of inspecting <code>rsp</code>, you can inspect <code>rsp,h</code> to show its value as hexidecimal). Basically, to align the stack on a 16 byte boundary, the hexidecimal representation of <code>rsp</code> must end in a zero (since that would make it a multiple of 16).</p>
+
+<p>&ldquo;But I haven&rsquo;t done anything.. how can the stack be unaligned?&rdquo;. Well, lets see.</p>
+
+<p>When a function is called using the <code>call</code> instruction, two things happen. Firstly, the address of the very next instruction is placed on the stack. Secondly, a <code>jmp</code> is performed to jump to the function address you&rsquo;re calling. When that function returns via a <code>ret</code> instruction, the stack is popped to find the address execution should return to.</p>
+
+<p>Lets go back to the first part of that though.</p>
+
+<blockquote>
+<p>&ldquo;the address of the very next instruction is placed on the stack&rdquo;.</p>
+</blockquote>
+
+<p>Assuming the calling process had an aligned stack (it should.. since the operating system has called our code and the operating system <em>should be following its own ABI</em>), when it <code>call</code>s our process, it will automatically unalign the stack pointer. This is important, because literally every call we make in our own code will also cause this to happen.</p>
+
+<p>To fix this, we can simply align the stack manually upon entering our code.</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight nasm language-nasm">
+  <figcaption>
+    
+      <span>asmcalc.asm</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-nasm"><code class="nasm">global main
+
+section .text
+
+main:
+
+    sub rsp,0x08
+    xor rax,rax
+    ret</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>The stack will now be aligned after entering our <code>main</code> function:</p>
+
+<p><img src="https://user-images.githubusercontent.com/2499070/36079800-32980ff6-0fdb-11e8-894e-f1a0e0139015.PNG" alt="aligned_stack" /></p>
+
+<p>It should be noted that this isn&rsquo;t important for our very small program, but its important to understand as our program grows.</p>
+
+<h2 id="wrapping-up">Wrapping up</h2>
+
+<p>Congratulations! We&rsquo;ve just created a very simple 64-bit Windows executable and learned something about the Windows ABI along the way.</p>
+
+<p>Next time, we&rsquo;ll make it do something more interesting by displaying text on the screen.</p>
+
+<p>If you&rsquo;re following along at home, this post is <a href="https://github.com/simon-whitehead/asmcalc/tree/part1">tagged as <code>part1</code> in my <code>asmcalc</code> repository on GitHub</a></p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/assembly/">assembly</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/asmcalc/">asmcalc</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/debug/">debug</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/shunting/">shunting</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/yard/">yard</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/reverse/">reverse</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/polish/">polish</a>
+
+  <a class="tag tag--primary tag--small" href="https://simon-whitehead.github.io/tags/notation/">notation</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://simon-whitehead.github.io/2018/02/hello-world/" data-tooltip="Hello World">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Simon Whitehead. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://simon-whitehead.github.io/2018/02/hello-world/" data-tooltip="Hello World">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsimon-whitehead.github.io%2F2018%2F02%2Fadventures-in-64-bit-windows-assembly-part-1%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fsimon-whitehead.github.io%2F2018%2F02%2Fadventures-in-64-bit-windows-assembly-part-1%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fsimon-whitehead.github.io%2F2018%2F02%2Fadventures-in-64-bit-windows-assembly-part-1%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/945a935d0612d1cba5291963e213b315?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Simon Whitehead</h4>
+    
+      <div id="about-card-bio">Hi I&rsquo;m Simon! I&rsquo;m a developer located in Melbourne, Australia. I am employed as a .NET developer but outside of work I prefer Rust, Go and Assembly. I hope you enjoy the content you find here. Thanks for visiting!</div>
+    
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Australia
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://simon-whitehead.github.io/2018/02/adventures-in-64-bit-windows-assembly-part-1/">
+                <h3 class="media-heading">Adventures in 64-bit Windows Assembly: Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I&rsquo;m a bit of a sucker for low level programming. I&rsquo;m not an expert at it &hellip; but I understand enough to be pretty dangerous. All low level programming is interesting.. but I&rsquo;ve found 64-bit Windows programming to be one of the most interesting. It is also one of the most confusing for many people.
+This is the start of a series on 64-bit Windows assembly for beginners. This is a topic many find hard to get into due to the lack of/hard to find information and some simple explanations.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://simon-whitehead.github.io/2018/02/hello-world/">
+                <h3 class="media-heading">Hello World</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Hello world! I&rsquo;m learning how to use Hugo - the static site generator written in Go!
+I&rsquo;m going to start blogging more regularly as of 2018. Thanks for visiting .. I hope you enjoy the content that I produce.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         2 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://simon-whitehead.github.io/images/cover-2.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<script src="https://simon-whitehead.github.io/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.11.0/prism.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.11.0/components/prism-nasm.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.11.0/components/prism-c.min.js" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/simon-whitehead.github.io\/2018\/02\/adventures-in-64-bit-windows-assembly-part-1\/';
+          
+            this.page.identifier = '\/2018\/02\/adventures-in-64-bit-windows-assembly-part-1\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'simon-whitehead-github-io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+  </body>
+</html>
+
